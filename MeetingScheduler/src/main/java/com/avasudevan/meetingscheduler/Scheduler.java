@@ -15,9 +15,9 @@ public class Scheduler {
         return rooms;
     }
 
-    static String book(int startTime, int endTime) {
+    static String book(int day, int startTime, int endTime) {
         Meeting meeting = new Meeting();
-        String result = meeting.book(startTime, endTime);
+        String result = meeting.book(day, startTime, endTime);
 
         if(!result.contains("No Meeting Rooms Available")) {
             meetingList.add(meeting);

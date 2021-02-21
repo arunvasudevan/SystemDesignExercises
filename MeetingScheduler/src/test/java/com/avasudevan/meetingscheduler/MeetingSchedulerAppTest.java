@@ -15,16 +15,17 @@ public class MeetingSchedulerAppTest {
 
     @Test
     public void testWithBookingSameTimeInAllRooms() {
-        Assert.assertEquals("room-1", Scheduler.book(1, 5));
-        Assert.assertEquals("room-2", Scheduler.book(1, 5));
-        Assert.assertEquals("room-3", Scheduler.book(1, 5));
-        Assert.assertEquals("No Meeting Rooms Available", Scheduler.book(1, 5));
+        Assert.assertEquals("room-1", Scheduler.book(1, 1, 5));
+        Assert.assertEquals("room-2", Scheduler.book(1, 1, 5));
+        Assert.assertEquals("room-3", Scheduler.book(1, 1, 5));
+        Assert.assertEquals("No Meeting Rooms Available", Scheduler.book(1, 1, 5));
     }
 
     @Test
-    public void testBoundaryConditions() {
-        Assert.assertEquals("room-1", Scheduler.book(1, 5));
-        Assert.assertEquals("room-1", Scheduler.book(5, 8));
-        Assert.assertEquals("room-2", Scheduler.book(2, 4));
+    public void testMultipleDays() {
+        Assert.assertEquals("room-1", Scheduler.book(1, 1, 5));
+        Assert.assertEquals("room-1", Scheduler.book(2, 1, 5));
+        Assert.assertEquals("room-2", Scheduler.book(1, 1, 5));
+        Assert.assertEquals("room-2", Scheduler.book(2, 1, 5));
     }
 }

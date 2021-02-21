@@ -6,7 +6,7 @@ import javafx.util.Pair;
 
 public class Meeting {
 
-    private int startTime, endTime;
+    private int startTime, endTime, day;
 
     public int getStartTime() {
         return startTime;
@@ -20,33 +20,37 @@ public class Meeting {
         return room;
     }
 
+    public int getDay() { return day; }
+
     private Room room;
 
     Meeting() { }
 
-    String book(int startTime, int endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-
+    String book(int day, int startTime, int endTime) {
         Scheduler.getRooms()
             .stream()
             .forEach(r -> {
-                    List<Pair<Integer, Integer>> booked = r.getCalendar();
-                    boolean isAvailable = true;
+                boolean isAvailable = true;
+                if (r.getCalendarMap().containsKey(day)) {
+                    List<Pair<Integer, Integer>> booked = r.getCalendarMap().get(day);
 
-                    for(Pair<Integer, Integer> b: booked) {
-                        if((startTime < b.getValue() && endTime > b.getKey())) {
+                    for (Pair<Integer, Integer> b : booked) {
+                        if ((startTime < b.getValue() && endTime > b.getKey())) {
                             isAvailable = false;
                         }
                     }
+                }
 
-                    if(this.room == null && isAvailable) {
-                        r.addBooking(startTime, endTime);
-                        this.room = r;
-                    }
+                if (this.room == null && isAvailable) {
+                    this.startTime = startTime;
+                    this.endTime = endTime;
+                    this.day = day;
+                    r.addBooking(day, startTime, endTime);
+                    this.room = r;
+                }
                 }
             );
 
-        return room != null ? room.getName() : "No Meeting Rooms Available";
+        return this.room != null ? this.room.getName() : "No Meeting Rooms Available";
     }
 }

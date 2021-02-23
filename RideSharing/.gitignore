@@ -1,6 +1,0 @@
-*.bin
-*.lock
-.gradle
-build
-.idea
-

@@ -20,11 +20,11 @@ public class Sprint {
         return tasks;
     }
 
-    public int getStart() {
-        return start;
-    }
+    public void printSprintDetails() {
 
-    public int getEnd() {
-        return end;
+        System.out.println("Start:"+start+", End:"+end);
+        tasks.stream().forEach(t -> {
+            System.out.println(t.getTitle()+", "+ t.getStatus()+", "+ t.getAssigned().name);
+        });
     }
 }

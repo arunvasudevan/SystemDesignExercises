@@ -1,3 +1,5 @@
 rootProject.name = 'SystemDesignExercises'
 include 'TaskPlanner'
 include 'RideSharing'
+include 'BowlingGame'
+

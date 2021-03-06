@@ -3,4 +3,5 @@ include 'TaskPlanner'
 include 'RideSharing'
 include 'BowlingGame'
 include 'SnakesAndLadders'
+include 'Splitwise'
 

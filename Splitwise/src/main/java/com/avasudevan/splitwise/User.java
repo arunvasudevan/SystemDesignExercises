@@ -9,10 +9,8 @@ public class User {
     private final String name;
     private final Map<Integer, Double> oweMap;
     private double totalExpenses;
-    private static int unique = 1;
 
     public User(int id, String name) {
-        //id = getUniqueId();
         this.id = id;
         this.name = name;
         this.oweMap = new HashMap<>();
@@ -37,9 +35,5 @@ public class User {
 
     public String getName() {
         return name;
-    }
-
-    private int getUniqueId() {
-        return unique++;
     }
 }

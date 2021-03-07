@@ -21,8 +21,8 @@ public class SplitWise {
     }
 
     public void addExpense(User spentUser, double amountSpent, String desc, SPLIT_TYPE splitType,
-        List<User> usersInvolved, Map<Integer,Double> exactAmountMap, Map<Integer, Double> percentMap) {
-        new Expense().addExpense(spentUser, amountSpent, desc, splitType, usersInvolved, exactAmountMap, percentMap);
+        List<User> usersInvolved, List<Double> exactAmountList, List<Double> percentList) {
+        new Expense().addExpense(spentUser, amountSpent, desc, splitType, usersInvolved, exactAmountList, percentList);
     }
 
     public void printBalance() {

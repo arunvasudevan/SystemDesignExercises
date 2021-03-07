@@ -2,6 +2,7 @@ package com.avasudevan.splitwise;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Expense {
 
@@ -9,18 +10,18 @@ public class Expense {
     private String desc;
 
     public void addExpense(User spentUser, double amountSpent, String desc, SPLIT_TYPE splittype, List<User> userList,
-        Map<Integer, Double> exactAmountMap, Map<Integer, Double> percentMap) {
-        id = id++;
+        List<Double> exactAmountList, List<Double> percentList) {
+        id = getUniqueId();
         this.desc = desc;
 
         if (splittype.equals(SPLIT_TYPE.EQUALLY)) {
             calculateEqual(spentUser, amountSpent, userList);
         }
         if (splittype.equals(SPLIT_TYPE.EXACT)) {
-            calculateExact(spentUser, exactAmountMap);
+            calculateExact(spentUser, amountSpent, exactAmountList);
         }
         if (splittype.equals(SPLIT_TYPE.PERCENTAGE)) {
-            calculatePercentage(spentUser, amountSpent, percentMap);
+            calculatePercentage(spentUser, amountSpent, percentList);
         }
     }
 
@@ -39,29 +40,44 @@ public class Expense {
         }
     }
 
-    private void calculatePercentage(User spentUser, double amountSpent, Map<Integer, Double> percentMap) {
+    private void calculatePercentage(User spentUser, double amountSpent, List<Double> percentList) {
 
-        for(Map.Entry<Integer, Double> entry: percentMap.entrySet()) {
-            User currentUser = SplitWise.getUser(entry.getKey());
+        if(percentList.stream().mapToDouble(t -> t).sum() != 100) {
+            System.out.println("Sum of all the percentages does not equal 100. Could not proceed, kindly fix the error and re-process!");
+            return;
+        }
 
-            double amountPerUser = (entry.getValue() * amountSpent) / 100.0;
-            if(currentUser.getId() != spentUser.getId()) {
-                currentUser.setTotalExpenses(currentUser.getTotalExpenses() - amountPerUser);
-                spentUser.getOweMap().put(currentUser.getId(), spentUser.getOweMap().getOrDefault(currentUser.getId(), (double) 0) + amountPerUser);
-                currentUser.getOweMap().put(spentUser.getId(), currentUser.getOweMap().getOrDefault(spentUser.getId(), (double) 0) - amountPerUser);
-            }
+        for(int i = 1; i <= percentList.size(); i++) {
+            User currentUser = SplitWise.getUser(i);
+
+            double amountPerUser = (percentList.get(i - 1) * amountSpent) / 100.0;
+            updateUserExpenses(spentUser, currentUser, amountPerUser);
         }
     }
 
-    private void calculateExact(User spentUser, Map<Integer, Double> exactAmountMap) {
+    private void calculateExact(User spentUser, double amountSpent, List<Double> exactAmountList) {
 
-        for(Map.Entry<Integer, Double> entry: exactAmountMap.entrySet()) {
-            User currentUser = SplitWise.getUser( entry.getKey());
-            if(currentUser.getId() != spentUser.getId()) {
-                currentUser.setTotalExpenses(currentUser.getTotalExpenses() - entry.getValue());
-                spentUser.getOweMap().put(currentUser.getId(), spentUser.getOweMap().getOrDefault(currentUser.getId(), (double) 0) + entry.getValue());
-                currentUser.getOweMap().put(spentUser.getId(), currentUser.getOweMap().getOrDefault(spentUser.getId(), (double) 0) - entry.getValue());
-            }
+        if(exactAmountList.stream().mapToDouble(t -> t).sum() != amountSpent) {
+            System.out.println("Exact amount does not equal the amount spent. Could not proceed, kindly fix the error and re-process!");
+            return;
         }
+
+        for(int i = 1; i <= exactAmountList.size(); i++) {
+            User currentUser = SplitWise.getUser(i);
+            double userExactAmount = exactAmountList.get(i - 1);
+            updateUserExpenses(spentUser, currentUser, userExactAmount);
+        }
+    }
+
+    private void updateUserExpenses(User spentUser, User currentUser, double userExactAmount) {
+        if(currentUser.getId() != spentUser.getId()) {
+            currentUser.setTotalExpenses(currentUser.getTotalExpenses() - userExactAmount);
+            spentUser.getOweMap().put(currentUser.getId(), spentUser.getOweMap().getOrDefault(currentUser.getId(), (double) 0) + userExactAmount);
+            currentUser.getOweMap().put(spentUser.getId(), currentUser.getOweMap().getOrDefault(spentUser.getId(), (double) 0) - userExactAmount);
+        }
+    }
+
+    private int getUniqueId() {
+        return id++;
     }
 }

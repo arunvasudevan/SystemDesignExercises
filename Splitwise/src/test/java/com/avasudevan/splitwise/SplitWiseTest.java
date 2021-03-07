@@ -2,9 +2,7 @@ package com.avasudevan.splitwise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,12 +38,8 @@ public class SplitWiseTest {
     @Test
     public void testSplitWiseForExactSplit() {
         splitwise.setUserList(userList);
-        Map<Integer, Double> exactAmountMap = new HashMap<>();
-        exactAmountMap.put(1, (double) 200);
-        exactAmountMap.put(2, (double) 100);
-        exactAmountMap.put(3, (double) 300);
-        exactAmountMap.put(4, (double) 50);
-        splitwise.addExpense(user1, 650.0, "Tickets to Great Barrier reef", SPLIT_TYPE.EXACT, userList, exactAmountMap, null);
+        List<Double> exactAmountList = Arrays.asList(200.0, 100.0, 300.0, 50.0);
+        splitwise.addExpense(user1, 650.0, "Tickets to Great Barrier reef", SPLIT_TYPE.EXACT, userList, exactAmountList, null);
         System.out.println("Exact Split:");
         splitwise.printBalance();
     }
@@ -53,13 +47,11 @@ public class SplitWiseTest {
     @Test
     public void testSplitWiseForPercentSplit() {
         splitwise.setUserList(userList);
-        Map<Integer, Double> percentMap = new HashMap<>();
-        percentMap.put(1, (double) 25);
-        percentMap.put(2, (double) 40);
-        percentMap.put(3, (double) 25);
-        percentMap.put(4, (double) 20);
-        splitwise.addExpense(user1, 1000, "Tickets to Great Barrier reef", SPLIT_TYPE.PERCENTAGE, userList, null, percentMap);
+        List<Double> percentList = Arrays.asList(25.0, 30.0, 25.0, 20.0);
+        splitwise.addExpense(user1, 1000, "Tickets to Great Barrier reef", SPLIT_TYPE.PERCENTAGE, userList, null, percentList);
         System.out.println("Percent Split:");
         splitwise.printBalance();
     }
+
+    // TODO: Add Simplify
 }

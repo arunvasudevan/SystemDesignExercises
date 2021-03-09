@@ -7,7 +7,7 @@ public class User {
 
     private int id;
     private final String name;
-    private final Map<Integer, Double> oweMap;
+    Map<Integer, Double> oweMap;
     private double totalExpenses;
 
     public User(int id, String name) {
@@ -19,6 +19,10 @@ public class User {
 
     public Map<Integer, Double> getOweMap() {
         return oweMap;
+    }
+
+    public void setOweMap(Map<Integer, Double> oweMap) {
+        this.oweMap = oweMap;
     }
 
     public double getTotalExpenses() {

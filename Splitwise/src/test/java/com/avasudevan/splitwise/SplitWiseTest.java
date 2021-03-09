@@ -53,5 +53,13 @@ public class SplitWiseTest {
         splitwise.printBalance();
     }
 
-    // TODO: Add Simplify
+    @Test
+    public void testSplitWiseSimplify() {
+        splitwise.setUserList(userList);
+        splitwise.addExpense(user1, 400.0, "Tickets to Great Barrier reef", SPLIT_TYPE.EQUALLY, userList, null, null);
+        splitwise.addExpense(user3, 1200.0, "Stay at Shark Town", SPLIT_TYPE.EQUALLY, userList, null, null);
+        splitwise.simplifyExpenses();
+        System.out.println("Simplify Test:");
+        splitwise.printBalance();
+    }
 }

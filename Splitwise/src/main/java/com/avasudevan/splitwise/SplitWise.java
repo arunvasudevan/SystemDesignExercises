@@ -45,7 +45,7 @@ public class SplitWise {
 
 
     public void simplifyExpenses() {
-
+        // TODO: Reduce the Complexity of this Algorithm from O(n ^3)
         double[][] adjMatrix = new double[userList.size()+1][userList.size()+1];
 
         userList.forEach( u -> {

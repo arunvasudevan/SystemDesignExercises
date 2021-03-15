@@ -6,4 +6,5 @@ include 'SnakesAndLadders'
 include 'Splitwise'
 include 'FacebookComments'
 include 'SalesManagement'
+include 'TextEditor'
 

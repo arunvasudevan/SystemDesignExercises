@@ -8,4 +8,5 @@ include 'FacebookComments'
 include 'SalesManagement'
 include 'TextEditor'
 include 'EmployeeManagementSystem'
+include 'BookCatalog'
 
